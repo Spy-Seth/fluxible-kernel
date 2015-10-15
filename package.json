@@ -1,0 +1,29 @@
+{
+  "name": "on-the-route-again",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bdd": "mocha ---colors --reporter=dot --recursive --watch tests/",
+    "test": "mocha --colors --reporter=spec --recursive tests/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Spy-Seth/on-the-route-again.git"
+  },
+  "author": "Armand Abric <armand@forgebinaire.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Spy-Seth/on-the-route-again/issues"
+  },
+  "homepage": "https://github.com/Spy-Seth/on-the-route-again#readme",
+  "dependencies": {
+    "director": "~1.2.8",
+    "uniloc": "~0.2.0"
+  },
+  "devDependencies": {
+    "chai": "~3.3.0",
+    "mocha": "~2.3.3",
+    "sinon": "~1.17.1"
+  }
+}
