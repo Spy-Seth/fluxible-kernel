@@ -1,5 +1,5 @@
 {
-  "name": "on-the-route-again",
+  "name": "fluxible-kernel",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Spy-Seth/on-the-route-again.git"
+    "url": "git+https://github.com/Spy-Seth/fluxible-kernel.git"
   },
   "author": "Armand Abric <armand@forgebinaire.net>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Spy-Seth/on-the-route-again/issues"
+    "url": "https://github.com/Spy-Seth/fluxible-kernel/issues"
   },
-  "homepage": "https://github.com/Spy-Seth/on-the-route-again#readme",
+  "homepage": "https://github.com/Spy-Seth/fluxible-kernel#readme",
   "dependencies": {
     "babel": "~5.8.23",
     "director": "~1.2.8",
