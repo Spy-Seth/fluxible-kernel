@@ -2,10 +2,10 @@
 
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var HttpFirewall = require('./../../src/HttpFirewall');
+var HttpFirewall = require('./../../src/Firewall/HttpFirewall');
 
 describe('HttpFirewall', function () {
-    var firewallConfig = {
+    var firewallConfigFixture = {
         foo_area: {
             method: 'GET',
             path: '/foo',
@@ -27,10 +27,11 @@ describe('HttpFirewall', function () {
 
         var authenticationManagerMock = { hasRole: hasRoleStub };
 
-        var sut = new HttpFirewall(authenticationManagerMock, firewallConfig);
+        var sut = new HttpFirewall(authenticationManagerMock, firewallConfigFixture);
 
         expect(sut.hasAccess('GET', '/foo')).to.be.true;
+        expect(sut.hasAccess('GET', '/foo/bar')).to.be.true;
         expect(sut.hasAccess('POST', '/foo')).to.be.false;
-        expect(sut.hasAccess('OPTIONS', '/foo')).to.be.undefined;
+        expect(sut.hasAccess('OPTIONS', '/undefined-ressource')).to.be.true;
     });
 });
