@@ -1,11 +1,11 @@
 'use scrict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var HttpFirewall = require('./../../src/Firewall/HttpFirewall');
+import {expect} from 'chai';
+import sinon from 'sinon';
+import HttpFirewall from './../../../src/Firewall/HttpFirewall';
 
 describe('HttpFirewall', function () {
-    var firewallConfigFixture = {
+    const firewallConfigFixture = {
         foo_area: {
             method: 'GET',
             path: '/foo',
@@ -20,14 +20,14 @@ describe('HttpFirewall', function () {
     };
 
     it('should match the a path with an HTTP verbs', function () {
-        var hasRoleStub = sinon.stub();
+        let hasRoleStub = sinon.stub();
         hasRoleStub.throws(new Error('This role is not managed by the test.'));
         hasRoleStub.withArgs('PRODUCT_MANAGER').returns(true);
         hasRoleStub.withArgs('CUSTOMER').returns(false);
 
-        var authenticationManagerMock = { hasRole: hasRoleStub };
+        let authenticationManagerMock = { hasRole: hasRoleStub };
 
-        var sut = new HttpFirewall(authenticationManagerMock, firewallConfigFixture);
+        let sut = new HttpFirewall(authenticationManagerMock, firewallConfigFixture);
 
         expect(sut.hasAccess('GET', '/foo')).to.be.true;
         expect(sut.hasAccess('GET', '/foo/bar')).to.be.true;

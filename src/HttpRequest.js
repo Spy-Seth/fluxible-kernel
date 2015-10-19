@@ -1,29 +1,41 @@
-/**
- * @param {String} method
- * @param {String} ressource
- * @param {Array<Header>} headers
- * @param {Body} body
- */
-const HttpRequest = function HttpRequest(method, ressource, headers, body) {
-    this.method = method;
-    this.ressource = ressource;
-    this.headers = headers || [];
-    this.body = body;
-};
+import url from 'url';
 
-/**
- * @return {String}
- */
-HttpRequest.prototype.getMethod = function getMethod() {
-    return this.method;
-};
+class HttpRequest {
+    /**
+     * @param {String} method
+     * @param {String} ressource
+     * @param {Array<Header>} headers
+     * @param {Body} body
+     */
+    constructor(method, ressource, headers, body) {
+        this.method = method;
+        this.ressource = ressource;
+        this.headers = headers || [];
+        this.body = body;
+    }
 
-/**
- * @return {String}
- */
-HttpRequest.prototype.getRessource = function getRessource() {
-    return this.ressource;
-};
+    /**
+     * @return {String}
+     */
+    getMethod() {
+        return this.method;
+    }
+
+    /**
+     * @return {String}
+     */
+    getRessource() {
+        return this.ressource;
+    }
+
+    getPathname() {
+        return url(this.ressource, true).pathname;
+    }
+
+    getQuery() {
+        return url(this.ressource, true).query;
+    }
+}
 
 HttpRequest.HTTP_METHOD_GET = 'GET';
 HttpRequest.HTTP_METHOD_HEAD = 'HEAD';

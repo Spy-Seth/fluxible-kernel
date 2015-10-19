@@ -1,7 +1,7 @@
 'use scrict';
 
 var expect = require('chai').expect;
-var HttpRessourceMatcher = require('./../../src/Firewall/HttpRessourceMatcher');
+var HttpRessourceMatcher = require('./../../../src/Firewall/HttpRessourceMatcher');
 
 describe('HttpRessourceMatcher', function () {
     var routeConfigFixture = {

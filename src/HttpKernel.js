@@ -1,20 +1,33 @@
-import HttpFirewall from './Firewall/HttpFirewall';
 import Promise from 'promise';
+import HttpFirewall from './Firewall/HttpFirewall';
+import HttpResponse from './HttpResponse';
+import Router from './Router/Router';
 
 class HttpKernel {
-    constructor(container, firewallConfig) {
+    constructor(context, container, firewallConfig, routerConfig, rendererConfig) {
+        this.context = context;
         this.container = container;
 
+        this.firewallConfig = firewallConfig;
+        this.routerConfig = routerConfig;
+        this.rendererConfig = rendererConfig;
 
         this.authenticationManager = container.getService('authentication.manager');
         this.firewall = new HttpFirewall(this.authenticationManager, firewallConfig);
+
+        this.router = new Router(this.routerConfig);
     }
 
     handle(httpRequest) {
-        let promise = Promise.resolve(httpRequest);
+        const promise = Promise.resolve(httpRequest);
 
-        // TODO: Is a promise to manage the firewall is the better solution?
-        promise.then(this._thenApplyFirewall);
+        promise.then(this._thenApplyFirewall); // TODO: Is a promise to manage the firewall is the better solution?
+
+        promise.then(this._thenGenerateResponse);
+
+        promise.catch((err) => {
+                console.error('An error occur durring the kernel loop:', err);
+            });
 
         return promise;
     }
@@ -25,6 +38,18 @@ class HttpKernel {
         if (!hasAccessGranded) {
             throw new Error('TODO: no acccess');
         }
+    }
+
+    _thenGenerateResponse(httpRequest) {
+        return HttpResponse.ok('ok');
+    }
+
+    _prepareUnauthorizedAccess() {
+
+    }
+
+    _renderUnthorizedAccess() {
+
     }
 }
 
