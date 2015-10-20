@@ -12,45 +12,48 @@ class HttpKernel {
         this.routerConfig = routerConfig;
         this.rendererConfig = rendererConfig;
 
-        this.authenticationManager = container.getService('authentication.manager');
+        this.authenticationManager = this.container.getService('authentication.manager');
         this.firewall = new HttpFirewall(this.authenticationManager, firewallConfig);
 
         this.router = new Router(this.routerConfig);
     }
 
     handle(httpRequest) {
-        const promise = Promise.resolve(httpRequest);
+        const promise = new Promise((resolve, reject) => {
+            const hasAccessGranded = this.firewall.hasAccess(httpRequest.getMethod(), httpRequest.getRessource());
 
-        promise.then(this._thenApplyFirewall); // TODO: Is a promise to manage the firewall is the better solution?
-
-        promise.then(this._thenGenerateResponse);
-
-        promise.catch((err) => {
-                console.error('An error occur durring the kernel loop:', err);
-            });
+            if (hasAccessGranded) {
+                this.router.match(httpRequest.getMethod(), httpRequest.getRessource(), '', (routerResult) => {
+                    this._processRessouce(hasAccessGranded, routerResult, resolve, reject);
+                });
+            } else {
+                this._processRessouce(hasAccessGranded, null, resolve, reject);
+            }
+        });
 
         return promise;
     }
 
-    _thenApplyFirewall(httpRequest) {
-        const hasAccessGranded = this.firewall.hasAccess(httpRequest.getMethod(), httpRequest.getRessource());
-
+    _processRessouce(hasAccessGranded, routerResult, resolve, reject) {
         if (!hasAccessGranded) {
-            throw new Error('TODO: no acccess');
+            // TODO: add render of a configured route on unauthorized.
+            resolve(HttpResponse.unauthorized('unauthorized'));
+            return;
+        }
+
+        if (routerResult.isValidRoute()) {
+            resolve(HttpResponse.ok('ok'));
+        } else if (routerResult.isNotFoundRoute()) {
+            resolve(HttpResponse.notFound('ok'));
+        } else if (routerResult.isUnauthorizedRoute()) {
+            resolve(HttpResponse.unauthorized('unauthorized'));
+        } else if (routerResult.isRedirectedRoute()) {
+            resolve(HttpResponse.redirect(routerResult.getRedirectTo()));
+        } else {
+            reject(new Error(`Unmanager RouterResult: ${routerResult}`));
         }
     }
 
-    _thenGenerateResponse(httpRequest) {
-        return HttpResponse.ok('ok');
-    }
-
-    _prepareUnauthorizedAccess() {
-
-    }
-
-    _renderUnthorizedAccess() {
-
-    }
 }
 
 export default HttpKernel;

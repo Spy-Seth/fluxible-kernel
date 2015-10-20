@@ -5,7 +5,7 @@ import HttpRequest from './../HttpRequest';
  * @param {Array} ressources
  */
 const HttpRessourceMatcher = function HttpRessourceMatcher(ressources) {
-    let routesConfigurations = this._generateUnilocConfig(ressources || []);
+    const routesConfigurations = this._generateUnilocConfig(ressources || []);
     this.matcher = uniloc(routesConfigurations);
 };
 
@@ -38,7 +38,7 @@ HttpRessourceMatcher.prototype.getDetails = function getMatchedRouteInfo(httpMet
 
     return {
         name: route.name,
-        params: route.options
+        params: route.options,
     };
 };
 
@@ -61,7 +61,7 @@ HttpRessourceMatcher.prototype._generateUnilocConfig = function _generateUnilocC
             httpMethods = route.methods;
         }
 
-        httpMethods.forEach(function (httpMethod) {
+        httpMethods.forEach((httpMethod) => {
             routesConfigurations[routeName] = httpMethod + ' ' + path;
         });
     }

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "bdd": "mocha ---colors --reporter=dot --compilers js:babel/register --recursive --watch tests/",
+    "bdd": "mocha ---colors --reporter=min --compilers js:babel/register --recursive --watch tests/",
     "lint": "eslint --ext .js --ext .jsx .",
     "test": "mocha --colors --reporter=spec --compilers js:babel/register --recursive tests/"
   },
@@ -28,6 +28,7 @@
   "devDependencies": {
     "babel-eslint": "~4.1.3",
     "chai": "~3.3.0",
+    "chai-as-promised": "~5.1.0",
     "eslint": "~1.6.0",
     "eslint-config-airbnb": "~0.1.0",
     "eslint-plugin-react": "~3.5.1",

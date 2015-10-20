@@ -9,7 +9,7 @@ const HttpFirewall = function HttpFirewall(authenticationManager, config) {
 
     this.authenticationManager = authenticationManager;
     this.config = config || {};
-    this.router = new HttpRessourceMatcher(this.config);
+    this.ressourceMatcher = new HttpRessourceMatcher(this.config);
 };
 
 /**
@@ -18,18 +18,18 @@ const HttpFirewall = function HttpFirewall(authenticationManager, config) {
  * @return {Boolean}
  */
 HttpFirewall.prototype.hasAccess = function hasAccess(httpMethod, ressource) {
-    if (!this.router.match(httpMethod, ressource)) {
+    if (!this.ressourceMatcher.match(httpMethod, ressource)) {
         return true;
     }
 
-    const matchDetails = this.router.getDetails(httpMethod, ressource);
+    const matchDetails = this.ressourceMatcher.getDetails(httpMethod, ressource);
     const areaConfig = this.config[matchDetails.name];
 
     const neededRoles = areaConfig.roles || false;
 
     const self = this;
     let isGranded = false;
-    neededRoles.forEach(function (role) {
+    neededRoles.forEach((role) => {
         if (self.authenticationManager.hasRole(role)) {
             isGranded = true;
 
