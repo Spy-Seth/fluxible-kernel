@@ -9,31 +9,46 @@ class HttpRequest {
      */
     constructor(method, ressource, headers, body) {
         this.method = method;
-        this.ressource = ressource;
         this.headers = headers || [];
         this.body = body;
+
+        this.url = url.parse(ressource, true);
     }
 
     /**
      * @return {String}
      */
     getMethod() {
-        return this.method;
+        return this.method.toUpperCase();
     }
 
     /**
      * @return {String}
      */
-    getRessource() {
-        return this.ressource;
-    }
-
     getPathname() {
-        return url(this.ressource, true).pathname;
+        return this.url.pathname;
     }
 
+    /**
+     * @return {String}
+     */
+    getPath() {
+        return this.url.path;
+    }
+
+    /**
+     * @return {Object}
+     */
     getQuery() {
-        return url(this.ressource, true).query;
+        return this.url.query;
+    }
+
+    getHeaders() {
+        return this.headers;
+    }
+
+    getBody() {
+        return this.body;
     }
 }
 

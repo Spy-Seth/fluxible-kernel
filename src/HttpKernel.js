@@ -20,10 +20,10 @@ class HttpKernel {
 
     handle(httpRequest) {
         const promise = new Promise((resolve, reject) => {
-            const hasAccessGranded = this.firewall.hasAccess(httpRequest.getMethod(), httpRequest.getRessource());
+            const hasAccessGranded = this.firewall.hasAccess(httpRequest.getMethod(), httpRequest.getPathname());
 
             if (hasAccessGranded) {
-                this.router.match(httpRequest.getMethod(), httpRequest.getRessource(), '', (routerResult) => {
+                this.router.match(httpRequest.getMethod(), httpRequest.getPath(), httpRequest.getQuery(), (routerResult) => {
                     this._processRessouce(hasAccessGranded, routerResult, resolve, reject);
                 });
             } else {

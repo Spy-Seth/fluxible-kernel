@@ -1,9 +1,55 @@
 class HttpResponse {
+    /**
+     * @param {Number} statusCode
+     * @param {String} content
+     * @param {String} location
+     * @param {String} errorMessage
+     * @constructor
+     */
     constructor(statusCode, content, location, errorMessage) {
         this.statusCode = statusCode;
         this.content = content;
         this.location = location;
         this.errorMessage = errorMessage;
+    }
+
+    /**
+     * @param {String} content
+     * @return {HttpResponse}
+     */
+    static ok(content) {
+        return new HttpResponse(HttpResponse.HTTP_CODE_OK, content, null, null);
+    }
+
+    /**
+     * @param {String} location
+     * @return {HttpResponse}
+     */
+    static redirect(location) {
+        return new HttpResponse(HttpResponse.HTTP_CODE_REDIRECT, null, location, null);
+    }
+
+    /**
+     * @param {String} content
+     * @return {HttpResponse}
+     */
+    static unauthorized(content) {
+        return new HttpResponse(HttpResponse.HTTP_CODE_UNAUTHORIZED, content, null, null);
+    }
+
+    /**
+     * @return {HttpResponse}
+     */
+    static notFound() {
+        return new HttpResponse(HttpResponse.HTTP_CODE_NOT_FOUND, null, null, null);
+    }
+
+    /**
+     * @param {String} errorMessage
+     * @return {HttpResponse}
+     */
+    static internalServerError(errorMessage) {
+        return new HttpResponse(HttpResponse.HTTP_CODE_INTERNAL_ERROR, null, null, errorMessage);
     }
 
     /**
@@ -75,45 +121,5 @@ HttpResponse.HTTP_CODE_REDIRECT = 301;
 HttpResponse.HTTP_CODE_UNAUTHORIZED = 401;
 HttpResponse.HTTP_CODE_NOT_FOUND = 404;
 HttpResponse.HTTP_CODE_INTERNAL_ERROR = 500;
-
-
-/**
- * @param {String} content
- * @return {HttpResponse}
- */
-HttpResponse.ok = (content) => {
-    return new HttpResponse(HttpResponse.HTTP_CODE_OK, content, null, null);
-};
-
-/**
- * @param {String} location
- * @return {HttpResponse}
- */
-HttpResponse.redirect = (location) => {
-    return new HttpResponse(HttpResponse.HTTP_CODE_REDIRECT, null, location, null);
-};
-
-/**
- * @param {String} content
- * @return {HttpResponse}
- */
-HttpResponse.unauthorized = (content) => {
-    return new HttpResponse(HttpResponse.HTTP_CODE_UNAUTHORIZED, content, null, null);
-};
-
-/**
- * @return {HttpResponse}
- */
-HttpResponse.notFound = () => {
-    return new HttpResponse(HttpResponse.HTTP_CODE_NOT_FOUND, null, null, null);
-};
-
-/**
- * @param {String} errorMessage
- * @return {HttpResponse}
- */
-HttpResponse.internalServerError = (errorMessage) => {
-    return new HttpResponse(HttpResponse.HTTP_CODE_INTERNAL_ERROR, null, null, errorMessage);
-};
 
 export default HttpResponse;
