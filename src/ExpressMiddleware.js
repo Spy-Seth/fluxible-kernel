@@ -28,9 +28,11 @@ const ExpressMiddleware = (app, containerServiceConfig, containerParameterConfig
                     throw new Error('Unmanaged HttpResponse');
                 }
             }).catch((err) => {
-                console.error(err);
+                const errorMessage = (typeof err.getMessage === 'function' ? err.getMessage() : err);
+
+                console.error(errorMessage);
             });
-    }
+    };
 };
 
 export default ExpressMiddleware;

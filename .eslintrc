@@ -20,6 +20,8 @@
     "rules": {
         "strict": [2, "function"],
         "quotes": [2, "single", "avoid-escape"],
-        "indent": [2, 4]
+        "indent": [2, 4],
+        "no-console": 0,
+        "no-loop-func": 0,
     }
 }

@@ -3,14 +3,14 @@ class HttpResponse {
      * @param {Number} statusCode
      * @param {String} content
      * @param {String} location
-     * @param {String} errorMessage
+     * @param {Error} error
      * @constructor
      */
-    constructor(statusCode, content, location, errorMessage) {
+    constructor(statusCode, content, location, error) {
         this.statusCode = statusCode;
         this.content = content;
         this.location = location;
-        this.errorMessage = errorMessage;
+        this.error = error;
     }
 
     /**
@@ -45,11 +45,11 @@ class HttpResponse {
     }
 
     /**
-     * @param {String} errorMessage
+     * @param {Error} error
      * @return {HttpResponse}
      */
-    static internalServerError(errorMessage) {
-        return new HttpResponse(HttpResponse.HTTP_CODE_INTERNAL_ERROR, null, null, errorMessage);
+    static internalServerError(error) {
+        return new HttpResponse(HttpResponse.HTTP_CODE_INTERNAL_ERROR, null, null, error);
     }
 
     /**
@@ -77,7 +77,7 @@ class HttpResponse {
      * @return {String}
      */
     getErrorMessage() {
-        return this.errorMessage;
+        return this.error;
     }
 
     /**

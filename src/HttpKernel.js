@@ -31,6 +31,10 @@ class HttpKernel {
             }
         });
 
+        promise.catch((err) => {
+            return HttpResponse.internalServerError(err);
+        });
+
         return promise;
     }
 
@@ -38,10 +42,7 @@ class HttpKernel {
         if (!hasAccessGranded) {
             // TODO: add render of a configured route on unauthorized.
             resolve(HttpResponse.unauthorized('unauthorized'));
-            return;
-        }
-
-        if (routerResult.isValidRoute()) {
+        } else if (routerResult.isValidRoute()) {
             resolve(HttpResponse.ok('ok'));
         } else if (routerResult.isNotFoundRoute()) {
             resolve(HttpResponse.notFound('ok'));
@@ -50,7 +51,7 @@ class HttpKernel {
         } else if (routerResult.isRedirectedRoute()) {
             resolve(HttpResponse.redirect(routerResult.getRedirectTo()));
         } else {
-            reject(new Error(`Unmanager RouterResult: ${routerResult}`));
+            reject(new Error(`Unmanager RouterResult: "${routerResult}"`));
         }
     }
 
