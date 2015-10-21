@@ -17,11 +17,9 @@ build:
         - npm-install
 
         - script:
-            name: lint code
-            code: |
-                npm run lint
+            name: run test
+            code: npm test
 
         - script:
-            name: run test
-            code: |
-                npm test
+            name: lint code
+            code: npm run lint
