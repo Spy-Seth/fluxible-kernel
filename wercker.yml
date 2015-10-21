@@ -8,13 +8,18 @@ build:
                 npm install -g npm@latest
 
         - script:
-            name: echo nodejs information
+            name: nodejs informations
             code: |
                 echo "node version $(node -v) running"
                 echo "node environement '$NODE_ENV'"
                 echo "npm version $(npm -v) running"
 
         - npm-install
+
+        - script:
+            name: lint code
+            code: |
+                npm run lint
 
         - script:
             name: run test
