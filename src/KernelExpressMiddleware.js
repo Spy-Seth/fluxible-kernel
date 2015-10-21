@@ -2,17 +2,38 @@ import SkippyFactory from 'skippy';
 import HttpKernel from './HttpKernel';
 import HttpRequest from './HttpRequest';
 
-const ExpressMiddleware = (app, containerServiceConfig, containerParameterConfig, firewallConfig, routerConfig, rendererConfig) => {
+import FluxibleApplicationFactory from './FluxibleApplicationFactory';
+import KernelApplicationComponent from './Components/KernelApplication';
+
+const KernelExpressMiddleware = (config) => {
+    // TODO: Find a way to give the user a way to use is own ApplicationCompoment (as a child of this one)
+    // TODO: Allow the user to add plugins to the Fluxible app.
+    // TODO: Allow the user to add stores to the Fluxible app.
+    const app = FluxibleApplicationFactory.generate(
+        KernelApplicationComponent,
+        config.plugins,
+        config.stores,
+        config.routes
+    );
+
     return (req, res) => {
-        const skippy = SkippyFactory.create(containerServiceConfig, containerParameterConfig);
-        const httpKernel = new HttpKernel(app.getContext(), skippy, firewallConfig, routerConfig, rendererConfig);
+        const skippy = SkippyFactory.create(config.services, config.parameters);
+        const context = app.createContext();
+
+        const httpKernel = new HttpKernel(
+            context,
+            skippy,
+            config.firewalls,
+            config.routes,
+            config.renderer
+        );
 
         // TODO: Hydrate the HttpRequest with the express "req" headers
         // TODO: Hydrate the HttpRequest with the express "req" cookies
         const httpRequest = new HttpRequest(req.method, req.originalUrl, [], null);
 
         httpKernel
-            .handle(httpRequest)
+            .handleRequest(httpRequest)
             .then((httpResponse) => {
                 if (httpResponse.isOk()) {
                     res.status(httpResponse.getStatusCode()).send(httpResponse.getContent());
@@ -35,4 +56,4 @@ const ExpressMiddleware = (app, containerServiceConfig, containerParameterConfig
     };
 };
 
-export default ExpressMiddleware;
+export default KernelExpressMiddleware;

@@ -1,0 +1,17 @@
+{
+  "name": "fluxible-kernel-example",
+  "version": "0.0.1",
+  "description": "An usage example of fluxible-kernel",
+  "main": "index.js",
+  "scripts": {
+    "start": "DEBUG=*,-babel,-nodemon*,-express* nodemon --watch . start-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Armand Abric <armand@forgebinaire.net>",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "~1.7.3"
+  },
+  "dependencies": {
+  }
+}

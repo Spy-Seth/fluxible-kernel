@@ -75,7 +75,7 @@ describe('HttpKernel', () => {
         let sut = new HttpKernel(contextMock, fakeContainerInstance, firewallConfigFixture, routerConfigFixture, rendererConfigFixture);
 
         let httpRequest = new HttpRequest('GET', '/foo/42');
-        let handlePromise = sut.handle(httpRequest);
+        let handlePromise = sut.handleRequest(httpRequest);
 
         let expectedHttpReponse = new HttpResponse(401, 'unauthorized', null, null);
 
@@ -99,7 +99,7 @@ describe('HttpKernel', () => {
         let sut = new HttpKernel(contextMock, fakeContainerInstance, firewallConfigFixture, routerConfigFixture, rendererConfigFixture);
 
         let httpRequest = new HttpRequest('GET', '/foo/42');
-        let handlePromise = sut.handle(httpRequest);
+        let handlePromise = sut.handleRequest(httpRequest);
 
         let expectedHttpReponse = new HttpResponse(200, 'ok', null, null);
 
@@ -123,7 +123,7 @@ describe('HttpKernel', () => {
         let sut = new HttpKernel(contextMock, fakeContainerInstance, firewallConfigFixture, routerConfigFixture, rendererConfigFixture);
 
         let httpRequest = new HttpRequest('GET', '/bar/51/ok');
-        let handlePromise = sut.handle(httpRequest);
+        let handlePromise = sut.handleRequest(httpRequest);
 
         let expectedHttpReponse = new HttpResponse(200, 'ok', null, null);
 
@@ -147,7 +147,7 @@ describe('HttpKernel', () => {
         let sut = new HttpKernel(contextMock, fakeContainerInstance, firewallConfigFixture, routerConfigFixture, rendererConfigFixture);
 
         let httpRequest = new HttpRequest('GET', '/i-do-not-exist');
-        let handlePromise = sut.handle(httpRequest);
+        let handlePromise = sut.handleRequest(httpRequest);
 
         let expectedHttpReponse = new HttpResponse(404, null, null, null);
 
@@ -171,7 +171,7 @@ describe('HttpKernel', () => {
         let sut = new HttpKernel(contextMock, fakeContainerInstance, firewallConfigFixture, routerConfigFixture, rendererConfigFixture);
 
         let httpRequest = new HttpRequest('GET', '/bar/26/not-found');
-        let handlePromise = sut.handle(httpRequest);
+        let handlePromise = sut.handleRequest(httpRequest);
 
         let expectedHttpReponse = new HttpResponse(404, null, null, null);
 
@@ -195,7 +195,7 @@ describe('HttpKernel', () => {
         let sut = new HttpKernel(contextMock, fakeContainerInstance, firewallConfigFixture, routerConfigFixture, rendererConfigFixture);
 
         let httpRequest = new HttpRequest('GET', '/bar/32/redirected');
-        let handlePromise = sut.handle(httpRequest);
+        let handlePromise = sut.handleRequest(httpRequest);
 
         let expectedHttpReponse = new HttpResponse(301, null, '/fr/toto/32', null);
 

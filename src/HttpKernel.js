@@ -18,7 +18,7 @@ class HttpKernel {
         this.router = new Router(this.routerConfig);
     }
 
-    handle(httpRequest) {
+    handleRequest(httpRequest) {
         const promise = new Promise((resolve, reject) => {
             const hasAccessGranded = this.firewall.hasAccess(httpRequest.getMethod(), httpRequest.getPathname());
 
@@ -37,6 +37,10 @@ class HttpKernel {
 
         return promise;
     }
+
+    // render(request) {
+        // TODO: render on client side
+    // }
 
     _processRessouce(hasAccessGranded, routerResult, resolve, reject) {
         if (!hasAccessGranded) {
