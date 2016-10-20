@@ -4,8 +4,7 @@ build:
     steps:
         - script:
             name: install latest npm version
-            code: |
-                npm install -g npm@latest
+            code: npm install -g npm@latest
 
         - script:
             name: nodejs informations

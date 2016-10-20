@@ -24,6 +24,7 @@
     "director": "~1.2.8",
     "express": "~4.13.3",
     "fluxible": "~1.0.0",
+    "fluxible-addons-react": "~0.2.0",
     "fluxible-router": "~0.3.0",
     "promise": "~7.0.4",
     "react": "~0.14.0",

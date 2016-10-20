@@ -6,13 +6,13 @@ import firewallsConfiguration from './config/firewalls';
 import parametersConfiguration from './config/parameters';
 import routesConfiguration from './config/routes';
 import sevicesConfiguration from './config/services';
-const rendererConfiguration = {};
+import rendererConfiguration from './config/renderer';
 
 const debug = debugLib('fluxible-kernel-example');
 
 const server = express();
 
-server.use(fluxibleKernelExpressMiddleware({
+server.use(fluxibleKernelExpressMiddleware(server, {
     services: sevicesConfiguration,
     parameters: parametersConfiguration,
     firewalls: firewallsConfiguration,

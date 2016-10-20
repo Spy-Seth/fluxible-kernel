@@ -1,11 +1,15 @@
-import SkippyFactory from 'skippy';
 import HttpKernel from './HttpKernel';
 import HttpRequest from './HttpRequest';
 
 import FluxibleApplicationFactory from './FluxibleApplicationFactory';
 import KernelApplicationComponent from './Components/KernelApplication';
 
-const KernelExpressMiddleware = (config) => {
+const KernelExpressMiddleware = (server, config) => {
+    // Disable express unused feature.
+    server.disable('etag');
+    server.disable('x-powered-by');
+    server.set('view cache', false);
+
     // TODO: Find a way to give the user a way to use is own ApplicationCompoment (as a child of this one)
     // TODO: Allow the user to add plugins to the Fluxible app.
     // TODO: Allow the user to add stores to the Fluxible app.
@@ -17,12 +21,10 @@ const KernelExpressMiddleware = (config) => {
     );
 
     return (req, res) => {
-        const skippy = SkippyFactory.create(config.services, config.parameters);
-        const context = app.createContext();
-
         const httpKernel = new HttpKernel(
-            context,
-            skippy,
+            app,
+            config.services,
+            config.parameters,
             config.firewalls,
             config.routes,
             config.renderer

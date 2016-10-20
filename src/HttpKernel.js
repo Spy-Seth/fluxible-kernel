@@ -1,21 +1,24 @@
 import Promise from 'promise';
+import SkippyFactory from 'skippy';
 import HttpFirewall from './Firewall/HttpFirewall';
 import HttpResponse from './HttpResponse';
 import Router from './Router/Router';
+import ServerApplicationRenderer from './ApplicationRenderer/ServerApplicationRenderer';
 
 class HttpKernel {
-    constructor(context, container, firewallConfig, routerConfig, rendererConfig) {
-        this.context = context;
-        this.container = container;
+    constructor(app, serviceConfiguration, parametersConfiguration, firewallsConfiguration, routesConfiguration, rendererConfiguration) {
+        this.container = SkippyFactory.create(serviceConfiguration, parametersConfiguration);
 
-        this.firewallConfig = firewallConfig;
-        this.routerConfig = routerConfig;
-        this.rendererConfig = rendererConfig;
+        this.context = app.createContext({
+            container: this.container,
+        });
 
         this.authenticationManager = this.container.getService('authentication.manager');
-        this.firewall = new HttpFirewall(this.authenticationManager, firewallConfig);
+        this.firewall = new HttpFirewall(this.authenticationManager, firewallsConfiguration);
 
-        this.router = new Router(this.routerConfig);
+        this.router = new Router(routesConfiguration);
+
+        this.renderer = new ServerApplicationRenderer(app, this.context, this.container, rendererConfiguration);
     }
 
     handleRequest(httpRequest) {
@@ -47,7 +50,9 @@ class HttpKernel {
             // TODO: add render of a configured route on unauthorized.
             resolve(HttpResponse.unauthorized('unauthorized'));
         } else if (routerResult.isValidRoute()) {
-            resolve(HttpResponse.ok('ok'));
+            const result = this.renderer.renderToStaticMarkup();
+
+            resolve(HttpResponse.ok(result));
         } else if (routerResult.isNotFoundRoute()) {
             resolve(HttpResponse.notFound('ok'));
         } else if (routerResult.isUnauthorizedRoute()) {
@@ -58,7 +63,6 @@ class HttpKernel {
             reject(new Error(`Unmanager RouterResult: "${routerResult}"`));
         }
     }
-
 }
 
 export default HttpKernel;
